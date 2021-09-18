@@ -4,7 +4,7 @@ pipeline {
         //be sure to replace "willbla" with your own Docker Hub username
         DOCKER_IMAGE_NAME = "100919861986/train-schedule"
     }
-	node('SlaveNode'){
+	node('Jenkins-Node'){
 		stages {
 			stage('Build') {
 				steps {
