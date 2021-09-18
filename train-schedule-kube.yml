@@ -31,6 +31,6 @@ spec:
     spec:
       containers:
       - name: train-schedule
-        image: 100919861986/train-schedule
+        image: $DOCKER_IMAGE_NAME:$BUILD_NUMBER
         ports:
         - containerPort: 8080
