@@ -14,7 +14,7 @@ pipeline {
             steps {
 		    script{
 			sh("whoami")
-			sh("ip a")
+			sh("kubectl cluster-info")
 		    	sh("kubectl apply -f train-schedule-kube.yml")
 		    }
             }
