@@ -1,10 +1,10 @@
-pipeline {
-    agent any
-    environment {
-        //be sure to replace "willbla" with your own Docker Hub username
-        DOCKER_IMAGE_NAME = "100919861986/train-schedule"
-    }
-	node('Jenkins-Node'){
+node('Jenkins-Node'){
+	pipeline {
+		agent any
+		environment {
+			//be sure to replace "willbla" with your own Docker Hub username
+			DOCKER_IMAGE_NAME = "100919861986/train-schedule"
+		}
 		stages {
 			stage('Build') {
 				steps {
