@@ -13,7 +13,8 @@ pipeline {
             }
 			steps {
 				script {
-				   sh("touch ~/2")
+				   sh("pwd")
+				   sh("ip a")
 				}
             }
         }
