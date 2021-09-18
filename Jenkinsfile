@@ -13,6 +13,7 @@ pipeline {
             }
             steps {
 		    script{
+			sh("ls")
 		    	sh("kubectl apply -f train-schedule-kube.yml")
 		    }
             }
