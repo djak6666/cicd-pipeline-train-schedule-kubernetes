@@ -6,24 +6,28 @@ pipeline {
     }
     stages {
         stage('Build') {
-            steps {
-                echo 'Running build automation'
-                sh './gradlew build --no-daemon'
-                archiveArtifacts artifacts: 'dist/trainSchedule.zip'
-            }
+			node('Jenkins-Node') {
+				steps {
+					echo 'Running build automation'
+					sh './gradlew build --no-daemon'
+					archiveArtifacts artifacts: 'dist/trainSchedule.zip'
+				}
+			}
         }
         stage('Build Docker Image') {
             when {
                 branch 'master'
             }
-            steps {
-                script {
-                    app = docker.build(DOCKER_IMAGE_NAME)
-                    app.inside {
-                        sh 'echo Hello, World!'
-                    }
-                }
-            }
+			node('Jenkins-Node') {
+				steps {
+					script {
+						app = docker.build(DOCKER_IMAGE_NAME)
+						app.inside {
+							sh 'echo Hello, World!'
+						}
+					}
+				}
+			}	
         }
         stage('Push Docker Image') {
             when {
