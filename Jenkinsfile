@@ -1,33 +1,31 @@
 pipeline {
-    agent any
+    agent {
+        label 'Jenkins-Node'
+    }
     environment {
         //be sure to replace "willbla" with your own Docker Hub username
         DOCKER_IMAGE_NAME = "100919861986/train-schedule"
     }
     stages {
         stage('Build') {
-			node('Jenkins-Node') {
-				steps {
-					echo 'Running build automation'
-					sh './gradlew build --no-daemon'
-					archiveArtifacts artifacts: 'dist/trainSchedule.zip'
-				}
-			}
+            steps {
+                echo 'Running build automation'
+                sh './gradlew build --no-daemon'
+                archiveArtifacts artifacts: 'dist/trainSchedule.zip'
+            }
         }
         stage('Build Docker Image') {
             when {
                 branch 'master'
             }
-			node('Jenkins-Node') {
-				steps {
-					script {
-						app = docker.build(DOCKER_IMAGE_NAME)
-						app.inside {
-							sh 'echo Hello, World!'
-						}
-					}
-				}
-			}	
+            steps {
+                script {
+                    app = docker.build(DOCKER_IMAGE_NAME)
+                    app.inside {
+                        sh 'echo Hello, World!'
+                    }
+                }
+            }
         }
         stage('Push Docker Image') {
             when {
