@@ -13,7 +13,7 @@ pipeline {
             }
             steps {
 		    script{
-			sh("whoami")
+			sh("hostname")
 			sh("kubectl get node")
 		    	sh("kubectl apply -f train-schedule-kube.yml")
 		    }
