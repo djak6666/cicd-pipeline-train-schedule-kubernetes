@@ -44,12 +44,10 @@ pipeline {
             when {
                 branch 'master'
             }
-            steps {
-                kubernetesDeploy(
-                    kubeconfigId: 'kubeconfig',
-                    configs: 'train-schedule-kube.yml',
-                    enableConfigSubstitution: true
-                )
+			steps {
+				script {
+				   kubernetesDeploy kubeconfigId: 'kubeconfig', configs: 'train-schedule-kube.yml'
+				}
             }
         }
     }
