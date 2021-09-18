@@ -48,7 +48,6 @@ pipeline {
 		    script{
 		    	sh("kubectl apply -f train-schedule-kube.yml")
 		    }
-                )
             }
         }
     }
