@@ -1,11 +1,12 @@
-node('Jenkins-Node'){
-	pipeline {
-		agent any
-		environment {
-			//be sure to replace "willbla" with your own Docker Hub username
-			DOCKER_IMAGE_NAME = "100919861986/train-schedule"
-		}
-		stages {
+pipeline {
+    agent any
+    environment {
+        //be sure to replace "willbla" with your own Docker Hub username
+        DOCKER_IMAGE_NAME = "100919861986/train-schedule"
+    }
+	
+    stages {
+		node('Jenkins-Node'){
 			stage('Build') {
 				steps {
 					echo 'Running build automation'
@@ -13,6 +14,8 @@ node('Jenkins-Node'){
 					archiveArtifacts artifacts: 'dist/trainSchedule.zip'
 				}
 			}
+		}
+		node('Jenkins-Node'){	
 			stage('Build Docker Image') {
 				when {
 					branch 'master'
@@ -26,31 +29,31 @@ node('Jenkins-Node'){
 					}
 				}
 			}
-			stage('Push Docker Image') {
-				when {
-					branch 'master'
-				}
-				steps {
-					script {
-						docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login') {
-							app.push("${env.BUILD_NUMBER}")
-							app.push("latest")
-						}
-					}
-				}
-			}
-			stage('DeployToProduction') {
-				when {
-					branch 'master'
-				}
-				steps {
-					kubernetesDeploy(
-						kubeconfigId: 'kubeconfig',
-						configs: 'train-schedule-kube.yml',
-						enableConfigSubstitution: true
-					)
-				}
-			}
 		}
-	}
+        stage('Push Docker Image') {
+            when {
+                branch 'master'
+            }
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login') {
+                        app.push("${env.BUILD_NUMBER}")
+                        app.push("latest")
+                    }
+                }
+            }
+        }
+        stage('DeployToProduction') {
+            when {
+                branch 'master'
+            }
+            steps {
+                kubernetesDeploy(
+                    kubeconfigId: 'kubeconfig',
+                    configs: 'train-schedule-kube.yml',
+                    enableConfigSubstitution: true
+                )
+            }
+        }
+    }
 }
