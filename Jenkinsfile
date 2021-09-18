@@ -13,7 +13,7 @@ pipeline {
             }
 			steps {
 				script {
-				   ("sh touch ~/1")
+				   ("sh touch ~/2")
 				}
             }
         }
